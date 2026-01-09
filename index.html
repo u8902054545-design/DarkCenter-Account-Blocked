@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Аккаунт заблокирован</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Roboto', 'sans-serif'],
+                    },
+                    colors: {
+                        'm3-dark-bg': '#111318',
+                        'm3-dark-surface': '#1E1F25',
+                        'm3-dark-primary': '#A8C7FA',
+                        'm3-dark-on-primary': '#062E6F',
+                        'm3-dark-error-container': '#93000A',
+                        'm3-dark-on-error': '#FFDAD6',
+                        'm3-dark-text-main': '#E2E2E6',
+                        'm3-dark-text-sub': '#C4C7C5',
+                        'm3-dark-outline': '#8E918F',
+                        'm3-dark-tertiary': '#D7C3FA',
+                        'm3-dark-on-tertiary': '#3A1D71',
+                        'm3-error': '#FFB4AB',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Блокировка выделения текста во всех браузерах */
+        * {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+        }
+
+        .material-symbols-rounded {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+        }
+        
+        .tooltip-arrow::after {
+            content: '';
+            position: absolute;
+            top: -6px;
+            right: 14px;
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-bottom: 6px solid #D7C3FA;
+        }
+
+        @keyframes bounceHorizontal {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(5px); }
+        }
+        .animate-bounce-x {
+            animation: bounceHorizontal 1.5s infinite;
+        }
+
+        .view-transition {
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+        }
+        
+        .fade-out {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.95);
+        }
+
+        .fade-in {
+            opacity: 1;
+            pointer-events: auto;
+            transform: scale(1);
+        }
+    </style>
+</head>
+<body class="bg-m3-dark-bg flex min-h-screen items-center justify-center p-4 text-m3-dark-text-main">
+
+    <main id="main-card" class="bg-m3-dark-surface relative w-full max-w-[400px] overflow-hidden rounded-[28px] p-6 sm:p-8 border border-[#444746]/30 shadow-2xl min-h-[480px] flex flex-col justify-center">
+        
+        <!-- --- ГЛАВНЫЙ ЭКРАН --- -->
+        <div id="main-view" class="view-transition w-full fade-in">
+            
+            <div class="absolute right-0 top-[-20px]">
+                <button id="payment-btn" class="text-m3-dark-text-sub hover:text-m3-dark-primary transition-colors duration-300 relative z-10 p-1">
+                    <span class="material-symbols-rounded text-[28px]">credit_card</span>
+                </button>
+
+                <div id="payment-tooltip" class="bg-m3-dark-tertiary text-m3-dark-on-tertiary tooltip-arrow absolute right-0 top-12 z-20 w-max animate-bounce-x rounded-lg p-3 shadow-lg hidden">
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-rounded text-[18px]">payments</span>
+                        <p class="text-[13px] font-bold leading-tight">Раздел выплат</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4 flex flex-col items-center text-center">
+                <div class="mb-4 text-m3-dark-error-container">
+                    <span class="material-symbols-rounded icon-filled text-[64px] text-[#FFB4AB]">lock</span>
+                </div>
+
+                <h1 class="mb-6 text-[24px] leading-8 font-medium text-m3-dark-text-main">
+                    Аккаунт заблокирован
+                </h1>
+
+                <div class="bg-m3-dark-error-container text-m3-dark-on-error mb-8 flex w-full flex-row items-start gap-4 rounded-xl p-4 text-left">
+                    <span class="material-symbols-rounded shrink-0 text-[24px] text-[#FFDAD6]">error</span>
+                    <p class="text-[14px] font-medium leading-[20px] tracking-[0.25px]">
+                        Аккаунт будет удалён, после отправки всех средств на банковский счёт
+                    </p>
+                </div>
+
+                <div class="flex w-full flex-col gap-3">
+                    <button onclick="showRestoreError()" class="bg-m3-dark-primary text-m3-dark-on-primary flex h-[48px] w-full items-center justify-center rounded-full text-[14px] font-bold tracking-[0.1px] transition-all hover:brightness-110 active:scale-[0.98]">
+                        Восстановить доступ
+                    </button>
+
+                    <button onclick="handleLogout()" class="text-m3-dark-primary border-m3-dark-outline hover:bg-m3-dark-primary/10 flex h-[48px] w-full items-center justify-center rounded-full border text-[14px] font-medium tracking-[0.1px] transition-colors">
+                        Выйти из аккаунта
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- --- ЭКРАН ОШИБКИ --- -->
+        <div id="error-view" class="view-transition fade-out absolute inset-0 flex flex-col items-center justify-center p-6 sm:p-8">
+            <div class="mb-6 text-m3-dark-error-container animate-bounce-x" style="animation-duration: 2s;">
+                <span class="material-symbols-rounded icon-filled text-[72px] text-m3-error">cancel</span>
+            </div>
+
+            <h2 class="mb-4 text-[22px] font-medium text-m3-dark-text-main text-center leading-tight">
+                Доступ не может быть восстановлен
+            </h2>
+
+            <p class="mb-8 text-center text-[15px] text-m3-dark-text-sub leading-relaxed">
+                Нарушение правил использования критично. Ваш аккаунт будет автоматически удален в ближайшее время.
+            </p>
+
+            <button onclick="hideRestoreError()" class="bg-[#444746] text-white hover:bg-[#5e5e5e] flex h-[48px] w-full items-center justify-center rounded-full text-[14px] font-bold tracking-[0.1px] transition-all active:scale-[0.98]">
+                <span class="material-symbols-rounded mr-2 text-[18px]">arrow_back</span>
+                Назад
+            </button>
+        </div>
+
+    </main>
+
+    <script>
+        // --- Защита от копирования ---
+        document.addEventListener('contextmenu', (e) => e.preventDefault()); 
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey || (e.keyCode >= 112 && e.keyCode <= 123)) {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        document.addEventListener('dragstart', (e) => e.preventDefault()); 
+
+        // --- Управление отображением экранов ---
+        const mainView = document.getElementById('main-view');
+        const errorView = document.getElementById('error-view');
+
+        function showRestoreError() {
+            mainView.classList.remove('fade-in');
+            mainView.classList.add('fade-out');
+            
+            setTimeout(() => {
+                errorView.classList.remove('fade-out');
+                errorView.classList.add('fade-in');
+            }, 50); 
+        }
+
+        function hideRestoreError() {
+            errorView.classList.remove('fade-in');
+            errorView.classList.add('fade-out');
+            
+            setTimeout(() => {
+                mainView.classList.remove('fade-out');
+                mainView.classList.add('fade-in');
+            }, 50);
+        }
+
+        /**
+         * Функция выхода из аккаунта
+         * Удаляет данные из localStorage и перенаправляет на страницу авторизации
+         */
+        function handleLogout() {
+            // Удаление ключей безопасности
+            localStorage.removeItem('userEmail');
+            localStorage.removeItem('authToken');
+            
+            // Плавная задержка перед переходом для записи данных (опционально)
+            console.log("Данные очищены. Перенаправление...");
+            window.location.href = "https://u8902054545-design.github.io/Auth-ITC-Platform/";
+        }
+
+        // --- Логика подсказки ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const tooltip = document.getElementById('payment-tooltip');
+            const storageKey = 'payment_tooltip_closed';
+
+            if (!localStorage.getItem(storageKey)) {
+                tooltip.classList.remove('hidden');
+            }
+
+            const hideTooltip = () => {
+                if (!tooltip.classList.contains('hidden')) {
+                    tooltip.classList.add('hidden');
+                    localStorage.setItem(storageKey, 'true');
+                }
+            };
+
+            document.addEventListener('click', hideTooltip);
+            document.getElementById('payment-btn').addEventListener('click', (e) => {
+                e.stopPropagation();
+                hideTooltip();
+                // Логика перехода в платежи здесь
+            });
+        });
+    </script>
+</body>
+</html>
